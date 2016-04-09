@@ -1,3 +1,8 @@
+struct out_of_range {
+    unsigned int value;
+    out_of_range(unsigned int x) : value(x) {}
+};
+
 template <typename T>
 class Array {
     T *buf;
@@ -7,7 +12,14 @@ public:
     Array() : buf(NULL), capacity(0), size_(0) {}
     ~Array() { delete[] buf; }
     void push_back(const T &x);
-    T& operator[](unsigned int i) { return buf[i]; }
+    T& operator[](unsigned int i)
+    {
+        if (i >= size_)
+            //throw "Index out of range";
+            throw out_of_range(i);
+
+        return buf[i];
+    }
     unsigned int size() const { return size_; }
 };
 
